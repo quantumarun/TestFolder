@@ -1,3 +1,7 @@
+version=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$SRCROOT/GOPL/SupportingFiles/Info.plist")
+echo $version
+/usr/libexec/PlistBuddy "$SRCROOT/GOPL/SupportingFiles/Settings.bundle/Root.plist" -c "set PreferenceSpecifiers:0:DefaultValue $version"
+
 IFS=$'\n'
 PATH=${PATH}:/usr/local/bin
 
