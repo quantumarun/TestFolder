@@ -1,0 +1,34 @@
+IFS=$'\n'
+PATH=${PATH}:/usr/local/bin
+
+function generateIcon () {
+    BASE_IMAGE_NAME=$1
+    
+    TARGET_PATH="${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/${BASE_IMAGE_NAME}"
+    echo $TARGET_PATH
+    echo $SRCROOT
+    BASE_IMAGE_PATH=$(find ${SRCROOT} -name ${BASE_IMAGE_NAME})
+    echo $BASE_IMAGE_PATH
+    WIDTH=$(identify -format %w ${BASE_IMAGE_PATH})
+    echo $WIDTH
+    if [ "${CONFIGURATION}" == "Debug" ]; then
+    echo "Debug"
+    convert betaRibbon.png -resize ${WIDTH}x${WIDTH} resizedRibbon.png
+    composite resizedRibbon.png ${BASE_IMAGE_PATH} ${TARGET_PATH}
+    fi
+    
+    if [ "${CONFIGURATION}" == "UAT" ]; then
+    echo "UAT"
+    convert betaRibbon.png -resize ${WIDTH}x${WIDTH} resizedRibbon.png
+    composite resizedRibbon.png ${BASE_IMAGE_PATH} ${TARGET_PATH}
+    fi
+    
+    if [ "${CONFIGURATION}" == "Production" ]; then
+    echo "Production"
+    composite betaRibbon.png ${BASE_IMAGE_PATH} ${TARGET_PATH}
+    fi
+}
+
+generateIcon "AppIcon76x76~ipad.png"
+generateIcon "AppIcon76x76@2x~ipad.png"
+generateIcon "AppIcon83.5x83.5@2x~ipad.png"
